@@ -3,6 +3,7 @@ import ast
 from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
+from time import sleep
 
 ckey = 'm6GUDEF3MODZDgOviUGR68DLM'
 csecret = 'LjLt31OrfU17sgWNJWm4CFgujtm7NqQXJaOwlmVUuB0xTsH9Iu'
@@ -12,12 +13,14 @@ asecret = 'uDCTiswlOyKXZ3XOywd11mEQ97T1MeHxih7TeiW6s4cF2'
 class listener(StreamListener):
 
 	def on_data(self,data):
+		sleep(1);
+		print data
 		tweet = data.split(',"text":"')[1].split('","source')[0]
 		saveFile = open('twitDB.csv', 'a')
 		saveFile.write(tweet)
 		saveFile.write('\n')
 		saveFile.close()
-		print tweet
+		#print tweet
 		return True
 
 
@@ -28,4 +31,4 @@ auth = OAuthHandler(ckey, csecret)
 auth.set_access_token(atoken, asecret)
 
 twitterStream = Stream(auth, listener())
-twitterStream.filter(track=["arduino"])
+twitterStream.filter(track=["#DEMDEBATE"])
